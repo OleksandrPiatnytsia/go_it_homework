@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: clean-folder
+Version: 1.0.0
+Summary: Performs sorting of the folder specified in the parameter
+Author: Friday
+Author-email: i.ufolog@gmail.com
+License: MIT

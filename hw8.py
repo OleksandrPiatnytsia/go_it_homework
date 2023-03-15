@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 LST = [{"name": "Jasey", "birthday": "1990-3-19"},
+       {"name": "Jasey_4", "birthday": "1990-4-19"},
        {"name": "Andy", "birthday": "1990-3-18"},
        {"name": "Bill", "birthday": "1990-3-25"},
        {"name": "Brayan", "birthday": "1990-3-24"},
@@ -18,34 +19,29 @@ def get_birthdays_per_week(birthday_list: list[dict[str:str]]) -> dict:
     today = datetime.today().date()
     next_monday = today + timedelta(days=(7 - today.weekday()))
 
+    days_of_week = [next_monday + timedelta(days=i) for i in range(-2, 7 - 2)]
+
     for birthday_dict in birthday_list:
 
         lst_b_person = birthday_dict['birthday'].split("-")
 
-        person_birthday = datetime(int(lst_b_person[0]), int(lst_b_person[1]), int(lst_b_person[2]))
+        person_birthday = datetime(year=int(lst_b_person[0]), month=int(lst_b_person[1]), day=int(lst_b_person[2]))
 
         if person_birthday.month == today.month:
 
-            for i in range(-2, 7 - 2):
+            birthday_in_this_year = datetime(year=today.year, month=person_birthday.month, day=person_birthday.day).date()
 
-                day_of_week = next_monday + timedelta(days=i)
+            if birthday_in_this_year in days_of_week:
 
-                # print(day_of_week)
+                day_week_day = birthday_in_this_year.weekday()
 
-                if day_of_week.day == person_birthday.day:
-                    # print(f"{day_of_week.strftime('%A')}: {birthday_dict['name']}: {person_birthday.date()}")
+                if day_week_day in (5, 6):
+                    day_week_day = 0
 
-                    # day_week_day = day_of_week.strftime('%A')
-
-                    day_week_day = day_of_week.weekday()
-
-                    if day_week_day in (5, 6):
-                        day_week_day = 0
-
-                    if result_dict.get(day_week_day):
-                        result_dict[day_week_day].append(birthday_dict['name'])
-                    else:
-                        result_dict.update({day_week_day: [birthday_dict['name']]})
+                if result_dict.get(day_week_day):
+                    result_dict[day_week_day].append(birthday_dict['name'])
+                else:
+                    result_dict.update({day_week_day: [birthday_dict['name']]})
 
     sorted_keys_list = sorted(result_dict)
 
